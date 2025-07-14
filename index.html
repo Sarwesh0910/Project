@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>DFF - Direct From Farmers</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header>DFF - Direct From Farmers</header>
+  <nav>
+    <a href="#">Home</a>
+    <a href="#">Contacts</a>
+    <a href="#">About Us</a>
+  </nav>
+
+  <div class="main">
+    <aside>
+      <h3>Price Range</h3>
+      <label><input type="radio" name="price" value="0-1000"> ₹0 - ₹1000</label>
+      <label><input type="radio" name="price" value="1000-5000"> ₹1000 - ₹5000</label>
+      <label><input type="radio" name="price" value="5000-10000"> ₹5000 - ₹10,000</label>
+
+      <h3>Products</h3>
+      <label><input type="checkbox" value="Vegetables"> Vegetables</label>
+      <label><input type="checkbox" value="Fruits"> Fruits</label>
+      <label><input type="checkbox" value="Rice Bags"> Rice Bags</label>
+      <label><input type="checkbox" value="Millets"> Millets</label>
+      <label><input type="checkbox" value="Greens"> Greens</label>
+      <label><input type="checkbox" value="Dhalls"> Dhalls</label>
+    </aside>
+
+    <div class="product-grid" id="productGrid">
+      <div class="product-card" data-category="Vegetables" data-price="200">
+        <img src="images/carrot.jpg" alt="Carrots">
+        <div class="product-name">Carrots</div>
+        <div class="product-price">₹200</div>
+      </div>
+      <div class="product-card" data-category="Rice Bags" data-price="1200">
+        <img src="images/ricebag.jpg" alt="Rice Bag">
+        <div class="product-name">Rice Bag</div>
+        <div class="product-price">₹1200</div>
+      </div>
+      <div class="product-card" data-category="Fruits" data-price="600">
+        <img src="images/apple.jpg" alt="Apples">
+        <div class="product-name">Apples</div>
+        <div class="product-price">₹600</div>
+      </div>
+      <div class="product-card" data-category="Millets" data-price="900">
+        <img src="images/millet.jpg" alt="Millets">
+        <div class="product-name">Millets</div>
+        <div class="product-price">₹900</div>
+      </div>
+      <div class="product-card" data-category="Greens" data-price="180">
+        <img src="images/greens.jpg" alt="Greens">
+        <div class="product-name">Greens</div>
+        <div class="product-price">₹180</div>
+      </div>
+      <div class="product-card" data-category="Dhalls" data-price="300">
+        <img src="images/dhall.jpg" alt="Dhalls">
+        <div class="product-name">Dhalls</div>
+        <div class="product-price">₹300</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const products = document.querySelectorAll('.product-card');
+    const priceFilters = document.querySelectorAll('input[name="price"]');
+    const categoryFilters = document.querySelectorAll('input[type="checkbox"]');
+
+    function filterProducts() {
+      const selectedPrice = document.querySelector('input[name="price"]:checked')?.value;
+      const selectedCategories = Array.from(categoryFilters).filter(c => c.checked).map(c => c.value);
+
+      products.forEach(product => {
+        const price = parseInt(product.getAttribute('data-price'));
+        const category = product.getAttribute('data-category');
+
+        let matchPrice = true;
+        let matchCategory = true;
+
+        if (selectedPrice) {
+          const [min, max] = selectedPrice.split('-').map(Number);
+          matchPrice = price >= min && price <= max;
+        }
+
+        if (selectedCategories.length > 0) {
+          matchCategory = selectedCategories.includes(category);
+        }
+
+        product.style.display = matchPrice && matchCategory ? 'block' : 'none';
+      });
+    }
+
+    priceFilters.forEach(r => r.addEventListener('change', filterProducts));
+    categoryFilters.forEach(c => c.addEventListener('change', filterProducts));
+  </script>
+
+</body>
+</html>
